@@ -6,6 +6,19 @@ function refreshPageCount(){
     document.getElementById('page').innerHTML = currentItem+1;
 }
 
+function removeListNavigation(){
+    document.querySelector('.item.active').classList.remove('active');
+    document.querySelector('.slider-image.active').classList.remove('active');
+    document.querySelector('.slider-image.prev').classList.remove('prev');
+    document.querySelector('.slider-image.next').classList.remove('next');
+}
+
+function addImagesListNavigation(){
+    images[currentItem].classList.add('active');
+    images[(currentItem+1)%items.length].classList.add('next');
+    images[(currentItem-1+items.length)%items.length].classList.add('prev');
+}
+
 function toggleActiveState(element){
     element.classList.toggle('active');
 }
@@ -24,39 +37,33 @@ const nextItem = (n) =>{
 
 const handleListClick = (event) => {
     if (event.target.tagName === 'LI') {
-        document.querySelector('.item.active').classList.toggle('active');
-        document.querySelector('.slider-image.active').classList.toggle('active');
-        /*document.querySelector('.item.prev').classList.toggle('prev');
-        document.querySelector('.item.next').classList.toggle('next');*/
+        removeListNavigation()
         event.target.classList.toggle('active');
         while(!items[currentItem].classList.contains('active')){
             nextItem(currentItem);
         }
-        images[currentItem].classList.toggle('active');
-        // items[(currentItem+1)%items.length].classList.toggle('next');
-        // items[(currentItem-1+items.length)%items.length].classList.toggle('prev');
+        addImagesListNavigation()
         refreshPageCount()
-        
     }
 }
 
-const toLeft = (event) => {
-    document.querySelector('.item.active').classList.toggle('active');
-    document.querySelector('.slider-image.active').classList.toggle('active');
+const toLeft = (event) => {;
+    removeListNavigation()
     prevItem(currentItem);
-    items[currentItem].classList.toggle('active');
-    images[currentItem].classList.toggle('active');
+    items[currentItem].classList.add('active');
+    addImagesListNavigation()
     refreshPageCount()
 }
 
 const toRight = (event) => {
-    document.querySelector('.item.active').classList.toggle('active');
-    document.querySelector('.slider-image.active').classList.toggle('active');
+    removeListNavigation()
     nextItem(currentItem);
-    items[currentItem].classList.toggle('active');
-    images[currentItem].classList.toggle('active');
+    items[currentItem].classList.add('active');
+    addImagesListNavigation()
     refreshPageCount()
 }
+
+
 
 document.querySelector('.item-wrapper').addEventListener('click', handleListClick);
 document.querySelector('.left-arrow').addEventListener('click', toLeft);
